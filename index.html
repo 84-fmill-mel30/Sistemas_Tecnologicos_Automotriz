@@ -2,140 +2,186 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PROPART V12 | DIAGNOSTIC REAL</title>
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <title>PROPART SYSTEM - PUBLICIDAD OFICIAL</title>
     <style>
-        :root { --blue: #00d4ff; --green: #39ff14; --pink: #ff007f; --bg: #0b0e14; }
-        body { background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
-        
-        /* PORTADA */
-        #intro { position: fixed; width: 100%; height: 100%; background: radial-gradient(circle, #1a232e, #000); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 1000; transition: 0.5s; }
-        .btn-main { padding: 20px 40px; font-size: 1.5rem; background: transparent; color: var(--green); border: 2px solid var(--green); border-radius: 50px; cursor: pointer; letter-spacing: 2px; box-shadow: 0 0 15px var(--green); }
+        body {
+            background: #E5E5E5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Arial Narrow', Arial, sans-serif;
+        }
+        /* Contenedor con Rojo Mate (Firebrick) */
+        .anuncio {
+            width: 950px;
+            height: 650px;
+            background: #FFFFFF;
+            border: 10px solid #B22222;
+            border-radius: 40px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            padding: 15px;
+            overflow: hidden;
+        }
+        /* Cabecera */
+        .header {
+            text-align: center;
+            border-bottom: 4px solid #0047AB;
+            margin-bottom: 10px;
+        }
+        .header h1 {
+            color: #0047AB; 
+            -webkit-text-stroke: 1.5px #B22222;
+            font-size: 65px;
+            margin: 0;
+            font-style: italic;
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+        .header h2 {
+            color: #B22222;
+            font-size: 22px;
+            margin: 5px 0;
+            font-weight: bold;
+        }
+        /* Cuerpo con iconos de servicio */
+        .grid-servicios {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            padding: 10px;
+        }
+        .card {
+            background: #F4F4F4;
+            border-bottom: 5px solid #B22222;
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        /* ESTILO PARA EL ICONO DE LA ECU AUTOMOTRIZ */
+        .ecu-icon {
+            width: 80px;
+            height: 80px;
+            background: #D3D3D3; /* Gris Aluminio */
+            border: 3px solid #666; /* Contorno */
+            border-radius: 10px;
+            position: relative;
+            margin-bottom: 10px;
+        }
+        .ecu-icon::after {
+            content: ':::'; /* Simulación de Conectores perrones */
+            color: #333;
+            font-size: 40px;
+            position: absolute;
+            top: 10px;
+            left: 20px;
+        }
+        .card span { font-size: 55px; display: block; margin-bottom: 5px; }
+        .card p { font-weight: bold; font-size: 16px; color: #111; margin: 0; line-height: 1.2; }
 
-        /* INTERFAZ */
-        #ui { display: none; grid-template-columns: 300px 1fr 350px; gap: 15px; padding: 15px; flex: 1; min-height: 0; }
-        .panel { background: rgba(15, 20, 25, 0.98); border: 1px solid #222; border-radius: 12px; padding: 15px; display: flex; flex-direction: column; }
-        
-        .btn-v12 { width: 100%; padding: 12px; margin-bottom: 8px; background: #161b22; border: 1px solid var(--blue); color: var(--blue); font-weight: bold; cursor: pointer; text-transform: uppercase; }
-        
-        /* YULS EN EL MEDIO SUPERIOR */
-        #yuls-area { height: 120px; background: #050505; border: 1px solid var(--green); color: var(--green); padding: 10px; font-family: monospace; font-size: 13px; margin-bottom: 10px; overflow-y: auto; }
-        #diagram-box { flex: 1; border: 1px solid #333; background: #080808; display: flex; align-items: center; justify-content: center; border-radius: 8px; }
+        /* SECCIÓN DEL REPOSITORIO / WEB */
+        .web-link {
+            background: #f0f0f0;
+            border: 2px dashed #0047AB;
+            margin: 15px auto;
+            padding: 10px 20px;
+            border-radius: 50px;
+            color: #0047AB;
+            font-weight: bold;
+            font-size: 18px;
+            display: inline-block;
+            align-self: center;
+        }
 
-        /* STATUS Y MÉTRICAS A LA DERECHA */
-        .status-tag { padding: 10px; margin-bottom: 10px; border: 1px dashed #444; text-align: center; font-size: 12px; }
-        .card { background: #000; border-left: 4px solid var(--pink); padding: 12px; margin-bottom: 10px; }
-        .val { font-size: 32px; font-family: monospace; color: #fff; }
-
-        /* GRÁFICAS SEPARADAS ABAJO */
-        .graph-section { display: grid; grid-template-columns: 1fr 1fr; height: 300px; gap: 15px; padding: 0 15px 15px 15px; }
-        .graph-container { background: #050505; border: 1px solid #222; border-radius: 10px; }
+        /* Footer con Técnico y WhatsApp */
+        .footer {
+            margin-top: auto;
+            background: #0047AB;
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            padding: 10px 25px;
+            color: white;
+            justify-content: space-between;
+        }
+        .tecnico-info { display: flex; align-items: center; }
+        .tecnico-icon {
+            font-size: 60px;
+            background: white;
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 3px solid #B22222;
+            margin-right: 15px;
+        }
+        .text-domicilio h3 { margin: 0; font-size: 24px; font-style: italic; }
+        .text-domicilio p { margin: 0; font-size: 16px; color: #FFD700; font-weight: bold; }
+        
+        .wa-box {
+            text-align: right;
+            background: #FFF;
+            padding: 10px 20px;
+            border-radius: 15px;
+            color: #25D366;
+            font-weight: bold;
+            border: 2px solid #25D366;
+        }
+        .wa-box span { color: #555; font-size: 14px; display: block; }
     </style>
 </head>
 <body>
 
-<div id="intro">
-    <h1 style="color: var(--blue); letter-spacing: 8px;">PROPART V12</h1>
-    <button class="btn-main" onclick="activarPanel()">CONECTAR ESCÁNER</button>
-</div>
+    <div class="anuncio">
+        <div class="content">
+            <div class="header">
+                <h1>Propart System</h1>
+                <h2>SOLUCIONES TECNOLÓGICAS AUTOMOTRICES</h2>
+            </div>
 
-<header style="padding: 15px 25px; border-bottom: 1px solid #222; display: flex; justify-content: space-between; align-items: center;">
-    <div style="font-size: 24px; font-weight: bold; color: var(--blue);">PROPART V12</div>
-    <div id="bt-label" style="color: #555;">SISTEMA OFFLINE</div>
-</header>
+            <div class="grid-servicios">
+                <div class="card">
+                    <span>📉</span>
+                    <p>REPARACIONES Y DIAGNÓSTICOS<br><small>Pulsar / Osciloscopio</small></p>
+                </div>
+                <div class="card">
+                    <span>📜</span>
+                    <p>VENTA DE DIAGRAMAS<br>Y PINOUTS ORIGINALES</p>
+                </div>
+                <div class="card">
+                    <div class="ecu-icon"></div> <p>COMPUTADORAS Y MÓDULOS<br>Servicio Especializado (ECU/ECM)</p>
+                </div>
+            </div>
 
-<div id="ui">
-    <div class="panel">
-        <h3 style="color: var(--blue); font-size: 12px;">OPERACIONES</h3>
-        <button class="btn-v12" onclick="conectarBT()">SINCRO V-LINK BT</button>
-        <button class="btn-v12" onclick="pedirPinout()">VER PINOUT SENTRA</button>
-        <button class="btn-v12">DIAGRAMAS</button>
-        <button class="btn-v12" style="border-color: var(--green); color: var(--green);">PROPART DATE</button>
-    </div>
+            <div class="web-link">
+                🌐 VISITA MI REPO: <span style="color:#B22222;">github.com/tu-usuario/tu-repositorio</span>
+            </div>
 
-    <div class="panel">
-        <div id="yuls-area">> Yuls: Hola socio Millan. Sin conexión Bluetooth detectada.</div>
-        <div id="diagram-box">
-            <div id="display-content" style="color: #222;">ÁREA DE PROYECCIÓN TÉCNICA</div>
+            <div class="footer">
+                <div class="tecnico-info">
+                    <div class="tecnico-icon">👨‍🔧</div>
+                    <div class="text-domicilio">
+                        <h3>Servicio a Domicilio Personalizado</h3>
+                        <p>¡Reparamos tu nave donde estés! 🚛</p>
+                    </div>
+                </div>
+                <div class="wa-box">
+                    <span>Mándame WhatsApp:</span>
+                    📱 221 956 7392
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="panel">
-        <div id="vlink-status" class="status-tag">V-LINK DESCONECTADO</div>
-        <h3 style="color: var(--blue); font-size: 12px;">MONITOR REAL</h3>
-        <div class="card"><small>APP1 (PIN 34)</small><div id="v1" class="val">0.000 V</div></div>
-        <div class="card" style="border-color: var(--blue);"><small>APP2 (PIN 35)</small><div id="v2" class="val">0.000 V</div></div>
-    </div>
-</div>
-
-<div class="graph-section">
-    <div id="g1" class="graph-container"></div>
-    <div id="g2" class="graph-container"></div>
-</div>
-
-<script>
-    // TUS UUIDS CARNAL
-    const UUIDS = ['000018f0-0000-1000-8000-00805f9b34fb', '0000fff0-0000-1000-8000-00805f9b34fb'];
-    let device, char;
-    const log = document.getElementById('yuls-area');
-
-    function activarPanel() {
-        document.getElementById('intro').style.opacity = '0';
-        setTimeout(() => {
-            document.getElementById('intro').style.display = 'none';
-            document.getElementById('ui').style.display = 'grid';
-            initPlots();
-        }, 500);
-    }
-
-    async function conectarBT() {
-        try {
-            log.innerHTML += "<br>> Buscando V-Link con UUIDs autorizados...";
-            device = await navigator.bluetooth.requestDevice({
-                filters: [{ services: [UUIDS[0]] }, { services: [UUIDS[1]] }],
-                optionalServices: UUIDS
-            });
-            
-            const server = await device.gatt.connect();
-            const service = await server.getPrimaryService(UUIDS[0]); // Probamos el primer servicio
-            char = await service.getCharacteristic(UUIDS[1]); // Probamos la característica
-
-            document.getElementById('bt-label').innerText = "SISTEMA ONLINE";
-            document.getElementById('bt-label').style.color = "var(--green)";
-            document.getElementById('vlink-status').innerText = "V-LINK CONECTADO REAL ✅";
-            document.getElementById('vlink-status').style.borderColor = "var(--green)";
-            document.getElementById('vlink-status').style.color = "var(--green)";
-
-            await char.startNotifications();
-            char.addEventListener('characteristicvaluechanged', (e) => {
-                let raw = new TextDecoder().decode(e.target.value);
-                let data = raw.split(',');
-                if(data.length >= 2) {
-                    let val1 = parseFloat(data[0]);
-                    let val2 = parseFloat(data[1]);
-                    document.getElementById('v1').innerText = val1.toFixed(3) + " V";
-                    document.getElementById('v2').innerText = val2.toFixed(3) + " V";
-                    Plotly.extendTraces('g1', {y: [[val1]]}, [0]);
-                    Plotly.extendTraces('g2', {y: [[val2]]}, [0]);
-                }
-            });
-            log.innerHTML += "<br>> ¡Sincronizado! Recibiendo telemetría real.";
-        } catch (err) {
-            log.innerHTML += "<br>> Error: " + err.message;
-        }
-    }
-
-    function pedirPinout() {
-        log.innerHTML += "<br>> Yuls: Proyectando Pinout Sentra 120 pines...";
-        document.getElementById('display-content').innerHTML = '<img src="https://images.tcdn.com.br/img/editor/up/650428/pinout_sentra_120.jpg" style="max-width:90%; border:1px solid var(--blue);">';
-    }
-
-    function initPlots() {
-        const layout = { paper_bgcolor: 'rgba(0,0,0,0)', plot_bgcolor: 'rgba(0,0,0,0)', font: {color: '#444', size: 10}, margin: {t:10, b:30, l:40, r:10}, xaxis: {showgrid: false}, yaxis: {gridcolor: '#111', range:[0,5]} };
-        Plotly.newPlot('g1', [{y:[], mode:'lines', name:'APP1', line:{color:'#39ff14'}}], layout);
-        Plotly.newPlot('g2', [{y:[], mode:'lines', name:'APP2', line:{color:'#00d4ff'}}], layout);
-    }
-</script>
 </body>
 </html>
