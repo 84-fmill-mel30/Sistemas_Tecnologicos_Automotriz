@@ -10,5 +10,5 @@ Este repositorio contiene la tecnología propietaria de **Propart Diagnostic**.
 - **Seguridad**: Encriptación AES-256 integrada.
 - **Visualización Dual**: Gráficas y valores numéricos para cero margen de error.
 
----
+---https://wa.me/message/ZSPDHOTLJ5FDO1
 *Propiedad Privada - Encriptado por YULS para MILLAN*
