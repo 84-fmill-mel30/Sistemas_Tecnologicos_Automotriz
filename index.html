@@ -1,1 +1,510 @@
 
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DATESEG MX - ProPart System V7</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .header {
+            background: rgba(0,0,0,0.8);
+            color: #fff;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid #FF9800;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: #FF9800;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .bt-status {
+            padding: 8px 15px;
+            background: #444;
+            border-radius: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .bt-indicator {
+            width: 8px;
+            height: 8px;
+            background: #ff4444;
+            border-radius: 50%;
+            animation: pulse 1s infinite;
+        }
+        
+        .bt-indicator.connected {
+            background: #44ff44;
+            animation: none;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .container {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            padding: 15px;
+            overflow-y: auto;
+        }
+        
+        .modulo {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            min-height: 100px;
+        }
+        
+        .modulo:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+            background: #f9f9f9;
+        }
+        
+        .modulo.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .modulo-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+        
+        .modulo-title {
+            font-size: 13px;
+            text-align: center;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .modulo.active .modulo-title {
+            color: white;
+        }
+        
+        .badge {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: #ff4444;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        /* CHARDS FLOTANTE */
+        .chards-fab {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            z-index: 999;
+            transition: all 0.3s ease;
+            border: 3px solid white;
+        }
+        
+        .chards-fab:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(255,152,0,0.4);
+        }
+        
+        .chards-fab-icon {
+            font-size: 28px;
+        }
+        
+        .chards-modal {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 300px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            padding: 15px;
+            display: none;
+            z-index: 998;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .chards-modal.active {
+            display: block;
+            animation: slideUp 0.3s ease;
+        }
+        
+        @keyframes slideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .chards-header {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+            font-size: 14px;
+        }
+        
+        .chards-response {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.4;
+            margin-bottom: 10px;
+            padding: 10px;
+            background: #f5f5f5;
+            border-radius: 5px;
+        }
+        
+        .chards-input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+        
+        .chards-buttons {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .chards-btn {
+            flex: 1;
+            padding: 8px;
+            background: #FF9800;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+        
+        .chards-btn:hover {
+            background: #F57C00;
+            transform: scale(1.05);
+        }
+        
+        .chards-btn.mic {
+            background: #667eea;
+        }
+        
+        .chards-btn.mic:hover {
+            background: #764ba2;
+        }
+        
+        .chards-btn.listening {
+            animation: pulse 0.6s infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <div class="header">
+        <div class="logo">
+            <div class="logo-icon">PP</div>
+            <div>
+                <div style="font-size: 16px;">PROPART</div>
+                <div style="font-size: 10px; color: #999;">SYSTEM V7</div>
+            </div>
+        </div>
+        <div class="bt-status">
+            <div class="bt-indicator" id="btIndicator"></div>
+            <span id="btText">Desconectado</span>
+        </div>
+    </div>
+    
+    <!-- LAUNCHER MÓDULOS (4x4) -->
+    <div class="container">
+        <!-- Fila 1 -->
+        <div class="modulo" onclick="abrirModulo('scanner')">
+            <div class="modulo-icon">🔍</div>
+            <div class="modulo-title">Scanner OBD2</div>
+        </div>
+        
+        <div class="modulo" onclick="abrirModulo('graficas')">
+            <div class="modulo-icon">📊</div>
+            <div class="modulo-title">4 Gráficas</div>
+        </div>
+        
+        <div class="modulo" onclick="abrirModulo('bidireccional')">
+            <div class="modulo-icon">🔄</div>
+            <div class="modulo-title">Bidireccional</div>
+        </div>
+        
+        <div class="modulo" onclick="abrirModulo('dtc')">
+            <div class="modulo-icon">⚠️</div>
+            <div class="modulo-title">Códigos DTC</div>
+            <div class="badge">4</div>
+        </div>
+        
+        <!-- Fila 2 -->
+        <div class="modulo" onclick="abrirModulo('pulsar')">
+            <div class="modulo-icon">⚡</div>
+            <div class="modulo-title">Pulsar Diagramas</div>
+        </div>
+        
+        <div class="modulo" onclick="abrirModulo('pinout')">
+            <div class="modulo-icon">🔌</div>
+            <div class="modulo-title">Pinout ECU</div>
+        </div>
+        
+        <div class="modulo" onclick="abrirModulo('sensores')">
+            <div class="modulo-icon">📡</div>
+            <div class="modulo-title">Sensores</div>
+        </div>
+        
+        <div class="modulo" onclick="abrirModulo('tips')">
+            <div class="modulo-icon">💡</div>
+            <div class="modulo-title">Tips & Vacunas</div>
+        </div>
+        
+        <!-- Fila 3 -->
+        <div class="modulo" onclick="abrirModulo('reportes')">
+            <div class="modulo-icon">📄</div>
+            <div class="modulo-title">Reportes</div>
+        </div>
+        
+        <div class="modulo" onclick="abrirModulo('historial')">
+            <div class="modulo-icon">📋</div>
+            <div class="modulo-title">Historial</div>
+        </div>
+        
+        <div class="modulo" onclick="abrirModulo('oilmaster')">
+            <div class="modulo-icon">🛢️</div>
+            <div class="modulo-title">OilMaster SOS</div>
+        </div>
+        
+        <div class="modulo" onclick="abrirModulo('refaccionaria')">
+            <div class="modulo-icon">📦</div>
+            <div class="modulo-title">Refacciones</div>
+        </div>
+        
+        <!-- Fila 4 -->
+        <div class="modulo" onclick="abrirModulo('printmx')">
+            <div class="modulo-icon">🖨️</div>
+            <div class="modulo-title">PrintMX</div>
+        </div>
+        
+        <div class="modulo" onclick="abrirModulo('auxilio')">
+            <div class="modulo-icon">🆘</div>
+            <div class="modulo-title">SOS Auxilio</div>
+        </div>
+        
+        <div class="modulo" onclick="abrirModulo('configuracion')">
+            <div class="modulo-icon">⚙️</div>
+            <div class="modulo-title">Configuración</div>
+        </div>
+    </div>
+    
+    <!-- CHARDS FLOTANTE (Sin Jules encima) -->
+    <div class="chards-fab" id="chardsFab">
+        <div class="chards-fab-icon">🤖</div>
+    </div>
+    
+    <div class="chards-modal" id="chardsModal">
+        <div class="chards-header">Jules - Asistente</div>
+        <div class="chards-response" id="chardsResponse">
+            ¿Qué necesitas? Puedo ayudarte con:
+            - Lectura de OBD2
+            - Diagnóstico de DTCs
+            - Información de sensores
+        </div>
+        <textarea class="chards-input" id="chardsInput" placeholder="Escribe tu pregunta..."></textarea>
+        <div class="chards-buttons">
+            <button class="chards-btn mic" id="micBtn" onclick="iniciarMicrófono()">🎤 Habla</button>
+            <button class="chards-btn" onclick="enviarPregunta()">Enviar</button>
+        </div>
+    </div>
+    
+    <script>
+        // Variables globales
+        let isListening = false;
+        const recognition = window.webkitSpeechRecognition ? new webkitSpeechRecognition() : null;
+        
+        // Configurar reconocimiento de voz
+        if (recognition) {
+            recognition.lang = 'es-MX';
+            recognition.continuous = false;
+            
+            recognition.onstart = () => {
+                isListening = true;
+                document.getElementById('micBtn').classList.add('listening');
+                document.getElementById('micBtn').textContent = '🎤 Escuchando...';
+            };
+            
+            recognition.onresult = (event) => {
+                let transcript = '';
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    transcript += event.results[i][0].transcript;
+                }
+                document.getElementById('chardsInput').value = transcript;
+            };
+            
+            recognition.onend = () => {
+                isListening = false;
+                document.getElementById('micBtn').classList.remove('listening');
+                document.getElementById('micBtn').textContent = '🎤 Habla';
+            };
+        }
+        
+        // CHARDS - Abrir/cerrar modal
+        document.getElementById('chardsFab').addEventListener('click', () => {
+            document.getElementById('chardsModal').classList.toggle('active');
+        });
+        
+        // Iniciar micrófono
+        function iniciarMicrófono() {
+            if (!recognition) {
+                alert('Micrófono no disponible en este navegador');
+                return;
+            }
+            if (isListening) {
+                recognition.stop();
+            } else {
+                recognition.start();
+            }
+        }
+        
+        // Enviar pregunta a Jules
+        function enviarPregunta() {
+            const pregunta = document.getElementById('chardsInput').value;
+            if (!pregunta.trim()) return;
+            
+            // Aquí van respuestas predefinidas simples
+            const respuestas = {
+                'rpm': 'RPM actual: 800',
+                'temperatura': 'Temperatura del motor: 90°C',
+                'velocidad': 'Velocidad: 0 km/h',
+                'presión': 'Presión de inyección: 1500 PSI',
+                'dtc': 'DTCs encontrados: P0101, P0151'
+            };
+            
+            let respuesta = 'No entendí. ¿Puedes reformular?';
+            for (const [clave, valor] of Object.entries(respuestas)) {
+                if (pregunta.toLowerCase().includes(clave)) {
+                    respuesta = valor;
+                    break;
+                }
+            }
+            
+            document.getElementById('chardsResponse').textContent = respuesta;
+            document.getElementById('chardsInput').value = '';
+            
+            // TTS (leer respuesta)
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(respuesta);
+                utterance.lang = 'es-MX';
+                speechSynthesis.speak(utterance);
+            }
+        }
+        
+        // Abrir módulos
+        function abrirModulo(modulo) {
+            console.log('Abriendo módulo:', modulo);
+            // Aquí van las funciones de cada módulo
+            if (modulo === 'scanner') {
+                alert('Scanner OBD2 - Conectar al ELM327');
+                if (window.Android) {
+                    window.Android.connectBluetooth('OBDII');
+                }
+            } else {
+                alert('Módulo: ' + modulo);
+            }
+        }
+        
+        // Simular Bluetooth conectado
+        setTimeout(() => {
+            document.getElementById('btIndicator').classList.add('connected');
+            document.getElementById('btText').textContent = 'Conectado';
+        }, 2000);
+        
+        // Callbacks de Bluetooth (desde Java)
+        window.onBluetoothConnected = () => {
+            document.getElementById('btIndicator').classList.add('connected');
+            document.getElementById('btText').textContent = 'Conectado';
+        };
+        
+        window.onBluetoothDisconnected = () => {
+            document.getElementById('btIndicator').classList.remove('connected');
+            document.getElementById('btText').textContent = 'Desconectado';
+        };
+        
+        window.onBluetoothData = (data) => {
+            console.log('Datos OBD2:', data);
+        };
+        
+        window.onBluetoothError = (error) => {
+            alert('Error Bluetooth: ' + error);
+        };
+    </script>
+</body>
+</html>
